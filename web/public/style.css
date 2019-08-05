@@ -1,0 +1,114 @@
+body {
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+    background: #1d364c;
+}
+
+a {
+    text-decoration: none;
+}
+
+.videos {
+    width: 100%;
+    height: 100vh;
+}
+
+#remote {
+    width: 100%;
+    object-fit: cover;
+    height: 100vh;
+    transform: rotateY(180deg);
+    z-index: 10;
+}
+
+#local {
+    position: absolute;
+    z-index: 20;
+    bottom: 10px;
+    width: 300px;
+    right: 10px;
+    background: #264058;
+    border-radius: 4px;
+    transform: rotateY(180deg);
+}
+
+.popup {
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    bottom: 0;
+    margin: auto;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.popup_content {
+    position: absolute;
+    background: #fff;
+    border-radius: 4px;
+    padding: 20px;
+    min-width: 280px;
+}
+
+.popup_close {
+    padding: 15px;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.btn {
+    font-family: 'Montserrat', sans-serif;
+    color: #fff;
+    width: 150px;
+    background: #264058;
+    padding: 10px 40px;
+    margin: 10px;
+    cursor: pointer;
+    font-size: 12px;
+    outline: 0px;
+    border: 0px;
+    font-weight: 500;
+    border-radius: 4px;
+}
+
+.video-connect .fa-error {
+    color: #34495e;
+}
+
+.video-connect .fa-success {
+    color: #2ecc71;
+}
+
+.video-connect,
+.video-control {
+    display: flex;
+    position: absolute;
+    background: #264058;
+    color: #fff !important;
+    border-radius: 4px;
+    z-index: 10;
+    color: #3498db;
+}
+
+.video-connect {
+    top: 20px;
+    right: 30px;
+}
+
+.video-control {
+    top: 20px;
+    left: 30px;
+}
+
+.video-connect .iconbar,
+.video-control .iconbar {
+    padding: 15px;
+    border-radius: 4px;
+}
