@@ -1,0 +1,22 @@
+html {
+    /* background-color: #000 !important; */
+}
+
+.injected_btn {
+    color: #fff !important;
+    background: #48f !important;
+    padding: 0 10px !important;
+    margin: 2px !important;
+    cursor: pointer !important;
+    font-size: 12px !important;
+    outline: 0px !important;
+    border: 0px !important;
+    font-weight: 400 !important;
+    border-radius: 2px !important;
+    position: relative !important;
+    text-decoration: none !important;
+}
+
+.injected_btn:hover {
+    background: #69a0ff !important;
+}
