@@ -1,0 +1,21 @@
+# MacOS files
+**/.DS_Store
+
+# Logs
+logs
+*.log
+npm-debug.log*
+*.lock
+
+# Dependency directories
+package-lock.json
+/node_modules
+
+# Optional npm cache directory
+.npm
+
+# Master branch
+/build
+
+.vscode
+.idea
