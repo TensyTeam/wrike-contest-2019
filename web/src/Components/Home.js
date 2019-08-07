@@ -16,10 +16,10 @@ class Home extends React.Component {
                             <span><a className="injected_btn" href="#download" draggable="false">Discuss</a></span>
                         </div>
                     </div>
-                    <div className="text">Use the only one Wrike account with all the neccessary tools for efficient team work</div>
+                    <div className="text">Use the only one <span className="gradient gradient_green">Wrike account</span> with all the neccessary tools for <span className="gradient gradient_hot">efficient</span> team work</div>
                 </div>
                 <div className="container" id="download">
-                    <div className="text">Steps to success:</div>
+                    <div className="title">Steps to success:</div>
                     <div className="screenshots">
                         <div className="screenshot">
                             <img src="./img/1.png" />
