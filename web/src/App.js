@@ -4,6 +4,8 @@ import { BrowserRouter, Route, Switch, Redirect, browserHistory } from "react-ro
 import Home from './Components/Home';
 import Video from './Components/Video';
 import Popup from './Components/Popup';
+import Auth from './Components/Auth';
+import Token from './Components/Token';
 
 
 class App extends React.Component {
@@ -59,6 +61,12 @@ class App extends React.Component {
 							onPopup={this.onPopup}
 							onRedirect={this.onRedirect}
 						/>
+					</Route>
+					<Route path="/auth">
+						<Auth />
+					</Route>
+					<Route path="/token">
+						<Token />
 					</Route>
 				</Switch>
 			</BrowserRouter>
