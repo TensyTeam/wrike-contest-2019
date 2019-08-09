@@ -2,7 +2,7 @@ import React from "react"
 
 import axios from 'axios'
 
-// import {CLIENT_ID, CLIENT_SECRET} from '../keys'
+import {LINK} from '../keys'
 
 
 export default class Token extends React.Component {
@@ -16,18 +16,10 @@ export default class Token extends React.Component {
     render() {
 		const code = String(document.location.search.split('=').pop())
 
-		axios.post(LINK + 'api/token?code=' + code).then((res) => {
-			this.state.cont = res
+		axios.get(LINK + 'api/token?code=' + code).then(res => { // post
+			console.log(res['data']['access_token'])
+			this.state.cont = res['data']['access_token']
 		})
-
-		// const data = {
-		// 	'client_id': CLIENT_ID,
-		// 	'client_secret': CLIENT_SECRET,
-		// 	'grant_type': 'authorization_code',
-		// 	'code': code,
-		// }
-
-		// axios.post('https://www.wrike.com/oauth2/token', data).then((res) => {this.state.cont = res})
 
         return (
             <p>{ this.state.cont }</p>

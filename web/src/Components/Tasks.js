@@ -2,7 +2,7 @@ import React from "react"
 
 import axios from 'axios'
 
-import {TOKEN} from '../keys'
+import {LINK, TOKEN} from '../keys'
 
 
 export default class Token extends React.Component {
