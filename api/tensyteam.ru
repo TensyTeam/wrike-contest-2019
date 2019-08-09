@@ -11,15 +11,23 @@ server {
         include /etc/letsencrypt/options-ssl-nginx.conf;
         ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
 
+        location /api/ {
+            rewrite ^/api/?(.*)$ /$1 break;
+            proxy_pass http://127.0.0.1:5555;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        }
+
         location /socket.io/ {
-            proxy_pass http://127.0.0.1:5050/socket.io/;
+            proxy_pass http://127.0.0.1:5555/socket.io/;
             proxy_set_header Host $host;
             proxy_set_header X-Real-IP $remote_addr;
             proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         }
 
         location / {
-            proxy_pass http://127.0.0.1:3030;
+            proxy_pass http://127.0.0.1:3333;
             proxy_redirect off;
             proxy_buffering off;
 

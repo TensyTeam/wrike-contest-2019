@@ -8,3 +8,4 @@ CORS(app, resources={r'/*': {'origins': '*'}})
 
 
 from app import api
+from app import sockets

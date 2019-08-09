@@ -6,6 +6,7 @@ import Video from './Components/Video';
 import Popup from './Components/Popup';
 import Auth from './Components/Auth';
 import Token from './Components/Token';
+import Tasks from './Components/Tasks';
 
 
 class App extends React.Component {
@@ -67,6 +68,9 @@ class App extends React.Component {
 					</Route>
 					<Route path="/token">
 						<Token />
+					</Route>
+					<Route path="/tasks">
+						<Tasks />
 					</Route>
 				</Switch>
 			</BrowserRouter>
