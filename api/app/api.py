@@ -12,7 +12,7 @@ from keys import LINK, CLIENT_ID, CLIENT_SECRET, TOKEN
 # def auth():
 # 	return '<a href="https://www.wrike.com/oauth2/authorize/v4?client_id={}&response_type=code&redirect_uri={}token">Authorize</a>'.format(CLIENT_ID, LINK)
 
-@app.route('/token') # , methods=['POST'])
+@app.route('/token')
 def token():
 	code = request.args.get('code')
 
@@ -32,8 +32,10 @@ def token():
 
 @app.route('/tasks')
 def tasks():
+	token = request.args.get('token')
+
 	headers = {
-		'Authorization': 'bearer {}'.format(TOKEN),
+		'Authorization': 'bearer {}'.format(token),
 	}
 
 	params = {}

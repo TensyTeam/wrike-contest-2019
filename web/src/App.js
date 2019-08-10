@@ -14,7 +14,8 @@ class App extends React.Component {
         super(props)
         this.state = {
 			popup: { active: false, current: null },
-			redirect: { status: false, path: '/' }
+			redirect: { status: false, path: '/' },
+			token: '',
         }
 		this.onPopup = this.onPopup.bind(this);
 		this.onRedirect = this.onRedirect.bind(this);
@@ -61,16 +62,17 @@ class App extends React.Component {
                             popup={this.state.popup}
 							onPopup={this.onPopup}
 							onRedirect={this.onRedirect}
+							token={this.state.token}
 						/>
 					</Route>
 					<Route path="/auth">
 						<Auth />
 					</Route>
 					<Route path="/token">
-						<Token />
+						<Token token={ this.state.token } />
 					</Route>
 					<Route path="/tasks">
-						<Tasks />
+						<Tasks token={ this.state.token } />
 					</Route>
 				</Switch>
 			</BrowserRouter>

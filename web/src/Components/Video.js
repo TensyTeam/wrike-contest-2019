@@ -2,6 +2,10 @@ import React from "react";
 import openSocket from 'socket.io-client';
 import $ from 'jquery';
 
+import axios from 'axios'
+
+import {LINK} from '../keys'
+
 
 class Video extends React.Component {
     constructor (props) {
@@ -9,14 +13,40 @@ class Video extends React.Component {
 		this.state = {
             position: null,
 			responce: [],
-            room: null
+            room: null,
+            token: props.token,
+            tasks: '',
 		}
 		this.onStart = this.onStart.bind(this);
 	}
 
 	componentWillMount() {
         this.onStart();
-	}
+    }
+    
+    componentDidMount() {
+        if (this.state.token == '') {
+            const code = String(document.location.search.split('=').pop())
+
+	    	axios.get(LINK + 'api/token?code=' + code).then(res => { // post
+                console.log(res['data']['access_token'])
+                this.setState({token: res['data']['access_token']})
+
+                this.getTasks()
+            })
+        } else {
+            this.getTasks()
+        }
+    }
+
+    getTasks() {
+        console.log('GET TASKS')
+
+        axios.get(LINK + 'api/tasks?token=' + this.state.token).then((res) => {
+            console.log(res['data']['data'])
+            this.setState({tasks: res['data']['data']})
+        })
+    }
 
     onStart() {
         let _position = document.location.pathname.split('/').pop();

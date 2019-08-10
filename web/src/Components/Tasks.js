@@ -9,14 +9,21 @@ export default class Token extends React.Component {
     constructor (props) {
         super(props)
 		this.state = {
+            token: props.token,
             cont: '',
 		}
     }
 
-    render() {
-        axios.post(LINK + 'api/tasks').then((res) => {
-			this.state.cont = res
+    componentDidMount() {
+        console.log('GET TASKS')
+
+        axios.get(LINK + 'api/tasks?token=' + this.state.token).then((res) => {
+            console.log(res['data']['data'])
+            this.setState({tasks: res['data']['data']})
         })
+    }
+
+    render() {
 
 		// const headers = {
 		// 	Authorization: 'bearer ' + TOKEN,
