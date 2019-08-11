@@ -5,6 +5,7 @@ import $ from 'jquery'
 import axios from 'axios'
 
 import { LINK } from '../keys'
+import { datetimeFormat } from '../Function/operations'
 
 
 class Video extends React.Component {
@@ -15,7 +16,7 @@ class Video extends React.Component {
 			responce: [],
             room: null,
             token: props.token,
-            tasks: '',
+            tasks: [],
 		}
 		this.onStart = this.onStart.bind(this);
 	}
@@ -27,7 +28,7 @@ class Video extends React.Component {
     componentDidMount() {
         const token = localStorage.getItem('token')
         if (token == '') {
-            window.location.href = LINK + 'auth'
+            // window.location.href = LINK + 'auth'
         } else {
             this.getTasks(token)
         }
@@ -37,8 +38,7 @@ class Video extends React.Component {
         console.log('GET TASKS')
 
         axios.get(LINK + 'api/tasks?token=' + token).then((res) => {
-            console.log(res['data']['data'])
-            this.setState({tasks: res['data']['data']})
+            this.setState({tasks: res['data']})
         })
     }
 
@@ -176,6 +176,7 @@ class Video extends React.Component {
     }
 
     render() {
+        console.log(this.state.tasks)
         return (
             <div className="videos">
                 {this.state.position === 'student' &&
@@ -183,6 +184,26 @@ class Video extends React.Component {
                         <div className="iconbar"><i className="fas fa-sign-out-alt"></i> Finish</div>
                     </div>
                 }
+                <div className="cards">
+                {this.state.tasks.map((item,index) =>
+                    <div className="card" key={index}>
+                        <div className="card_title">{item.title}</div>
+                        <div className="card_contacts">
+                            <span className="photo"><img src="/img/savva.png" /></span>
+                            <span className="date"><a href={item.permalink} target="_blank">show on wrike</a></span>
+                            <span>
+                                <select defaultValue={item.status}>
+                                    <option disabled>Статус</option>
+                                    <option value="Active">Active</option>
+                                    <option value="Active">Completed</option>
+                                    <option value="Active">Deferred</option>
+                                    <option value="Active">Cancelled</option>
+                                </select>
+                            </span>
+                        </div>
+                    </div>
+                )}
+                </div>
                 <div className="video-connect">
                     <div className="iconbar">
                         {this.state.position} <i id="connect" className="fas fa-circle fa-error"></i>

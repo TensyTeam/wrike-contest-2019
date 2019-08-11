@@ -6,6 +6,11 @@ body {
 
 a {
     text-decoration: none;
+    color: rgba(0, 0, 0, 0.56) !important;
+}
+
+a:hover {
+    color: rgba(0, 0, 0, 0.20) !important;
 }
 
 .videos {
@@ -144,7 +149,7 @@ a {
     align-items: center;
     justify-content: space-evenly;
     flex-wrap: wrap;
-    padding: 20px 0 80px;
+    padding: 20px 0 40px;
 }
 
 #download {
@@ -209,7 +214,7 @@ a {
 }
 
 .injected_btn {
-    color: #fff;
+    color: #fff !important;
     background: #48f;
     padding: 6px 10px;
     margin: 2px;
@@ -281,6 +286,37 @@ a {
 .footer {
     padding: 40px 0 40px;
     text-align: center;
+}
+
+#solution {
+    padding: 20px 0 100px;
+}
+
+#solution img {
+    height: 300px;
+    width: auto;
+    margin: 20px 0;
+}
+
+.block_flex {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.block_content {
+    text-align: center;
+}
+
+.cards {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    padding: 20px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    z-index: 100;
 }
 
 @media (max-width: 600px) {
