@@ -6,7 +6,6 @@ import Video from './Components/Video';
 import Popup from './Components/Popup';
 import Auth from './Components/Auth';
 import Token from './Components/Token';
-import Tasks from './Components/Tasks';
 
 
 class App extends React.Component {
@@ -20,7 +19,7 @@ class App extends React.Component {
 		this.onPopup = this.onPopup.bind(this);
 		this.onRedirect = this.onRedirect.bind(this);
 	}
-	
+
 	componentWillMount() {
 		if (localStorage.getItem('token') !== null) {
 			this.setState({ token: localStorage.getItem('token') });
@@ -40,7 +39,7 @@ class App extends React.Component {
     onRedirect(_path) {
         this.setState({ redirect: { status: true, path: _path } });
 	}
-	
+
 	changeToken(cont) {
 		localStorage.setItem('token', cont);
 		this.setState({ token: cont });
