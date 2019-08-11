@@ -5,7 +5,7 @@ import json
 
 import requests
 
-from keys import LINK, CLIENT_ID, CLIENT_SECRET, TOKEN
+from keys import LINK, CLIENT_ID, CLIENT_SECRET
 
 
 def users(ids, token):
@@ -88,21 +88,36 @@ def tasks():
 
 	return jsonify(tasks)
 
-# @app.route('/cards', methods=['POST'])
-# def cards():
-# 	token = request.args.get('token')
-# 	x = request.json
+@app.route('/cards', methods=['POST'])
+def cards():
+	token = request.args.get('token')
+	x = request.json
 
-# 	headers = {
-# 		'Authorization': 'bearer {}'.format(token),
-# 	}
+	headers = {
+		'Authorization': 'bearer {}'.format(token),
+	}
 
-# 	params = {}
+	#
 
-# 	for field in ('title', 'description'):
-# 		if field in x:
-# 			params[field] = x[field]
+	x['id'] = 'IEACMILUKQLNANJ2'
 
-# 	cont = requests.put('https://www.wrike.com/api/v4/tasks/{}'.format(x['id']), headers=headers, params=params)
+	#
 
-# 	return cont.text
+	params = {}
+
+	if 'name' in x:
+		params['title'] = x['name']
+
+	if 'cont' in x:
+		params['description'] = x['cont']
+
+	if 'status' in x:
+		params['status'] = x['status']
+
+	# for field in ('title', 'description', 'status'):
+	# 	if field in x:
+	# 		params[field] = x[field]
+
+	cont = requests.put('https://www.wrike.com/api/v4/tasks/{}'.format(x['id']), headers=headers, params=params)
+
+	return cont.text
