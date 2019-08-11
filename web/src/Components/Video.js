@@ -50,10 +50,18 @@ class Video extends React.Component {
     }
 
     getTasks(token) {
-        console.log('GET TASKS')
-
         axios.get(LINK + 'api/tasks?token=' + token).then((res) => {
-            this.setState({tasks: res['data']})
+            let _tasks = res['data'];
+            let _tasks_filter = [];
+            for(let m = 0; m < _tasks.length; m++) {
+                for(let i = 0; i < _tasks[m].users.length; i++) {
+                    let _name_surname = (_tasks[m].users[i].name + _tasks[m].users[i].surname).replace(/\s/g, '').toLowerCase();
+                    if(_name_surname === localStorage.getItem('user')) {
+                        _tasks_filter.push(_tasks[m]);
+                    }
+                }
+            }
+            this.setState({tasks: _tasks_filter})
         })
     }
 
@@ -226,7 +234,6 @@ class Video extends React.Component {
     }
 
     render() {
-        console.log(this.state.tasks)
         return (
             <div className="videos">
                 {this.state.position === 'student' &&

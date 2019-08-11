@@ -344,7 +344,6 @@ input {
 .photos {
     display: flex;
     flex-wrap: wrap;
-    width: 50%;
 }
 
 .card_shadow {

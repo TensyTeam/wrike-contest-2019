@@ -27,11 +27,7 @@ class App extends React.Component {
 			localStorage.setItem('token', '');
 		}
 	}
-
-    componentDidMount() {
-        console.log(1);
-	}
-
+    
     onPopup(_active, _current) {
 		this.setState({ popup: { active: _active, current: _current } });
 	}
