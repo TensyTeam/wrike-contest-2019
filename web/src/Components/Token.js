@@ -10,8 +10,9 @@ export default class Token extends React.Component {
     constructor (props) {
         super(props)
 		this.state = {
-            token: props.token,
+			token: props.token,
 		}
+		this.change = props.change
 	}
 
 	getToken() {
@@ -19,7 +20,8 @@ export default class Token extends React.Component {
 
 		axios.get(LINK + 'api/token?code=' + code).then(res => { // post
 			console.log(res['data']['access_token'])
-			this.setState({token: res['data']['access_token']})
+			this.change(res['data']['access_token'])
+			// this.setState({token: res['data']['access_token']})
 		})
 	}
 
@@ -29,7 +31,9 @@ export default class Token extends React.Component {
 
     render() {
         return (
-            <Redirect to="/video" />
+			<p>
+				{ this.state.token != '' && <Redirect to="/video" /> }
+			</p>
         )
     }
 }

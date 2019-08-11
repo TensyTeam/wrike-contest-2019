@@ -31,7 +31,11 @@ class App extends React.Component {
 
     onRedirect(_path) {
         this.setState({ redirect: { status: true, path: _path } });
-    }
+	}
+	
+	changeToken(cont) {
+		this.setState({ token: cont });
+	}
 
     render() {
         return (
@@ -40,7 +44,7 @@ class App extends React.Component {
 					<Popup
                         popup={this.state.popup}
 						onPopup={this.onPopup}
-							onRedirect={this.onRedirect}
+						onRedirect={this.onRedirect}
 					/>
 				}
 				<Switch>
@@ -66,13 +70,15 @@ class App extends React.Component {
 						/>
 					</Route>
 					<Route path="/auth">
-						<Auth />
+						<Auth
+							change={this.changeToken}
+						/>
 					</Route>
 					<Route path="/token">
-						<Token token={ this.state.token } />
-					</Route>
-					<Route path="/tasks">
-						<Tasks token={ this.state.token } />
+						<Token
+							token={ this.state.token }
+							change={this.changeToken}
+						/>
 					</Route>
 				</Switch>
 			</BrowserRouter>

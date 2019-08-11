@@ -25,8 +25,9 @@ class Video extends React.Component {
     }
 
     componentDidMount() {
+        console.log('!', this.state.token)
         if (this.state.token == '') {
-            window.location.href = LINK + 'auth'
+            // window.location.href = LINK + 'auth'
         } else {
             this.getTasks()
         }
