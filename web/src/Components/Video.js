@@ -16,6 +16,7 @@ class Video extends React.Component {
             room: null,
             token: props.token,
             tasks: [],
+            host: null
 		}
 		this.onStart = this.onStart.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -119,15 +120,15 @@ class Video extends React.Component {
         }
 
         //student
-        if(_position === 'student') {
-            localStorage.setItem(this.props.user.id, 'host');
+        if(_position === 'answer') {
+            localStorage.setItem(this.state.host, 'host');
             peer.onicecandidate = e => {
-                if(e.candidate && localStorage.getItem(this.props.user.id) === 'host' && e.candidate.type === localStorage.getItem(this.props.user.id)) {
-                    localStorage.setItem(this.props.user.id, 'srflx');
+                if(e.candidate && localStorage.getItem(this.state.host) === 'host' && e.candidate.type === localStorage.getItem(this.state.host)) {
+                    localStorage.setItem(this.state.host, 'srflx');
                     yourCandidate = e.candidate;
                     socket_io.emit('cand1', {description: JSON.stringify(yourCandidate), room: document.location.pathname.split('/')[document.location.pathname.split('/').length - 2] });
-                } else if(e.candidate && localStorage.getItem(this.props.user.id) === 'srflx' && e.candidate.type === localStorage.getItem(this.props.user.id)) {
-                    localStorage.setItem(this.props.user.id, 'none');
+                } else if(e.candidate && localStorage.getItem(this.state.host) === 'srflx' && e.candidate.type === localStorage.getItem(this.state.host)) {
+                    localStorage.setItem(this.state.host, 'none');
                     yourCandidate = e.candidate;
                     socket_io.emit('cand1', {description: JSON.stringify(yourCandidate), room: document.location.pathname.split('/')[document.location.pathname.split('/').length - 2] });
                 }

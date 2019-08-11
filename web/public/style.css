@@ -338,6 +338,7 @@ input {
     overflow-x: hidden;
     overflow-y: scroll;
     z-index: 100;
+    background: rgba(38, 64, 88, 0.2);
 }
 
 .photos {
