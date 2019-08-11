@@ -1,10 +1,10 @@
-import React from "react";
-import openSocket from 'socket.io-client';
-import $ from 'jquery';
+import React from 'react'
 
+import openSocket from 'socket.io-client'
+import $ from 'jquery'
 import axios from 'axios'
 
-import {LINK} from '../keys'
+import { LINK } from '../keys'
 
 
 class Video extends React.Component {
@@ -23,17 +23,10 @@ class Video extends React.Component {
 	componentWillMount() {
         this.onStart();
     }
-    
+
     componentDidMount() {
         if (this.state.token == '') {
-            const code = String(document.location.search.split('=').pop())
-
-	    	axios.get(LINK + 'api/token?code=' + code).then(res => { // post
-                console.log(res['data']['access_token'])
-                this.setState({token: res['data']['access_token']})
-
-                this.getTasks()
-            })
+            window.location.href = LINK + 'auth'
         } else {
             this.getTasks()
         }

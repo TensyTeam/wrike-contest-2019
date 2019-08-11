@@ -1,8 +1,9 @@
-import React from "react"
+import React from 'react'
+import { Redirect } from 'react-router-dom'
 
 import axios from 'axios'
 
-import {LINK} from '../keys'
+import { LINK } from '../keys'
 
 
 export default class Token extends React.Component {
@@ -13,7 +14,7 @@ export default class Token extends React.Component {
 		}
 	}
 
-	componentDidMount() {
+	getToken() {
 		const code = String(document.location.search.split('=').pop())
 
 		axios.get(LINK + 'api/token?code=' + code).then(res => { // post
@@ -22,9 +23,13 @@ export default class Token extends React.Component {
 		})
 	}
 
+	componentWillMount() {
+		this.getToken()
+	}
+
     render() {
         return (
-            <p><a href="/tasks">{ this.state.token }</a></p>
+            <Redirect to="/video" />
         )
     }
 }
