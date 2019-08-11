@@ -9,7 +9,7 @@ class Home extends React.Component {
                 <div className="container" id="banner">
                     <div className="title gradient gradient_cold">exTensy</div>
                     <div className="card">
-                        <div className="card_title">Publish our extension</div>
+                        <div className="card_title">Submission for the Wrike Contest</div>
                         <div className="card_contacts">
                             <span className="photo"><img src="/img/savva.png" /></span>
                             <span className="date">12 Aug</span>
@@ -35,15 +35,15 @@ class Home extends React.Component {
                     <div className="title">Steps to success</div>
                     <div className="screenshots">
                         <div className="screenshot">
-                            <img src="/img/picture_before.png" />
+                            <img src="/img/1.png" />
                             <div className="screenshot_title">1. Download Extensy and switch it on</div>
                         </div>
                         <div className="screenshot">
-                            <img src="/img/picture_before.png" />
+                            <img src="/img/2.png" />
                             <div className="screenshot_title">2. Choose any task on the Wrike platfrom</div>
                         </div>
                         <div className="screenshot">
-                            <img src="/img/picture_before.png" />
+                            <img src="/img/3.png" />
                             <div className="screenshot_title">3. Discuss the card with your teammate and edit it right during the call</div>
                         </div>
                     </div>
