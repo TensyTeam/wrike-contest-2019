@@ -214,6 +214,26 @@ a:hover {
     color: rgba(0, 0, 0, 0.56);
 }
 
+#create_card_block {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+input {
+    color: #1d364c;
+    width: 60%;
+    border: 0;
+    padding: 6px 10px;
+    margin: 2px;
+    font-size: 12px;
+    outline: 0px;
+    font-weight: 400;
+    border-radius: 2px;
+    text-decoration: none;
+    font-family: 'Montserrat', sans-serif;
+}
+
 .injected_btn {
     color: #fff !important;
     background: #48f;

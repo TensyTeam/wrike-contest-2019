@@ -19,6 +19,7 @@ class Video extends React.Component {
 		}
 		this.onStart = this.onStart.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.createCard = this.createCard.bind(this);
 	}
 
 	componentWillMount() {
@@ -56,7 +57,13 @@ class Video extends React.Component {
             console.log(res['data']);
             document.getElementById(id).style.display='none';
         })
-     }
+    }
+
+    createCard() {
+        let _name = document.getElementById('create_card').value;
+        let _id_folder = '1';
+        // createTask(token, _id_folder, { name: _name, cont: '', status: 'Active' })
+    }
 
     onStart() {
         let _position = document.location.pathname.split('/').pop();
@@ -201,33 +208,37 @@ class Video extends React.Component {
                     </div>
                 }
                 <div className="cards">
-                {this.state.tasks.map(item =>
-                    <div className="card" key={item.id}>
-                        <div className="card_shadow" id={item.id}>Loading</div>
-                        <div className="card_title">{item.name}</div>
-                        <div className="card_contacts">
-                            <span className="photos">
-                            {item.users.map(user =>
-                                <span className="photo" key={item.id + user.avatar}>
-                                    <img src={user.avatar} />
-                                </span>
-                             )}
-                            </span>
-                            <span className="date">
-                                <a href={item.link} target="_blank">show on wrike</a>
-                            </span>
-                            <span>
-                                <select defaultValue={item.status} onChange={(_e)=>{this.handleChange(_e, item.id)}}>
-                                    <option disabled>Статус</option>
-                                    <option value="Active">Active</option>
-                                    <option value="Completed">Completed</option>
-                                    <option value="Deferred">Deferred</option>
-                                    <option value="Cancelled">Cancelled</option>
-                                </select>
-                            </span>
-                        </div>
+                    <div className="card" id="create_card_block">
+                        <input placeholder="Write new task here" id="create_card" />
+                        <div className="injected_btn" onClick={()=>{this.createCard()}}>Create</div>
                     </div>
-                )}
+                    {this.state.tasks.map(item =>
+                        <div className="card" key={item.id}>
+                            <div className="card_shadow" id={item.id}>Loading</div>
+                            <div className="card_title">{item.name}</div>
+                            <div className="card_contacts">
+                                <span className="photos">
+                                {item.users.map(user =>
+                                    <span className="photo" key={item.id + user.avatar}>
+                                        <img src={user.avatar} />
+                                    </span>
+                                 )}
+                                </span>
+                                <span className="date">
+                                    <a href={item.link} target="_blank">show on wrike</a>
+                                </span>
+                                <span>
+                                    <select defaultValue={item.status} onChange={(_e)=>{this.handleChange(_e, item.id)}}>
+                                        <option disabled>Статус</option>
+                                        <option value="Active">Active</option>
+                                        <option value="Completed">Completed</option>
+                                        <option value="Deferred">Deferred</option>
+                                        <option value="Cancelled">Cancelled</option>
+                                    </select>
+                                </span>
+                            </div>
+                        </div>
+                    )}
                 </div>
                 <div className="video-connect">
                     <div className="iconbar">
