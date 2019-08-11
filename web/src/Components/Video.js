@@ -29,8 +29,20 @@ class Video extends React.Component {
     componentDidMount() {
         const token = localStorage.getItem('token')
 
+        const room = document.location.pathname.split('/')[document.location.pathname.split('/').length - 2]
+        const workspace = document.location.search.split('&')[0].split('=').pop()
+        const user = document.location.search.split('=').pop()
+        const type = document.location.pathname.split('/').pop()
+
+        console.log('!', token)
+
         if (token == '') {
-            // window.location.href = LINK + 'auth'
+            localStorage.setItem('room', room)
+            localStorage.setItem('workspace', workspace)
+            localStorage.setItem('user', user)
+            localStorage.setItem('type', type)
+
+            window.location.href = LINK + 'auth'
         } else {
             this.getTasks(token)
         }

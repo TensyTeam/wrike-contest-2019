@@ -13,6 +13,11 @@ export default class Token extends React.Component {
 			token: props.token,
 		}
 		this.change = props.change
+		this.room = localStorage.getItem('room')
+		this.workspace = localStorage.getItem('workspace')
+		this.user = localStorage.getItem('user')
+		this.type = localStorage.getItem('type')
+		this.link = '/video/' + this.room + '/' + this.type + '?workspace=' + this.workspace + '&user=' + this.user
 	}
 
 	getToken() {
@@ -26,13 +31,17 @@ export default class Token extends React.Component {
 	}
 
 	componentWillMount() {
+		// const room = localStorage.getItem('room')
+		// const workspace = localStorage.getItem('workspace')
+		// const user = localStorage.getItem('user')
+
 		this.getToken()
 	}
 
     render() {
         return (
 			<p>
-				{ this.state.token != '' && <Redirect to="/video" /> }
+				{ this.state.token != '' && <Redirect to={ this.link } /> }
 			</p>
         )
     }
