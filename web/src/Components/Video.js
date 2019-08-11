@@ -18,6 +18,7 @@ class Video extends React.Component {
             tasks: [],
 		}
 		this.onStart = this.onStart.bind(this);
+        this.handleChange = this.handleChange.bind(this);
 	}
 
 	componentWillMount() {
@@ -40,6 +41,22 @@ class Video extends React.Component {
             this.setState({tasks: res['data']})
         })
     }
+
+    handleChange(_e, _id) {
+        document.getElementById(_id).style.display='flex';
+        let _status = _e.target.value;
+        let _token = localStorage.getItem('token');
+        this.editTask(_token, _id, {status: _status});
+    }
+
+    editTask(token, id, json) {
+        json['id'] = id
+
+        axios.post(LINK + 'api/cards?token=' + token, json).then(res => {
+            console.log(res['data']);
+            document.getElementById(id).style.display='none';
+        })
+     }
 
     onStart() {
         let _position = document.location.pathname.split('/').pop();
@@ -184,19 +201,28 @@ class Video extends React.Component {
                     </div>
                 }
                 <div className="cards">
-                {this.state.tasks.map((item,index) =>
-                    <div className="card" key={index}>
-                        <div className="card_title">{item.title}</div>
+                {this.state.tasks.map(item =>
+                    <div className="card" key={item.id}>
+                        <div className="card_shadow" id={item.id}>Loading</div>
+                        <div className="card_title">{item.name}</div>
                         <div className="card_contacts">
-                            <span className="photo"><img src="/img/savva.png" /></span>
-                            <span className="date"><a href={item.permalink} target="_blank">show on wrike</a></span>
+                            <span className="photos">
+                            {item.users.map(user =>
+                                <span className="photo" key={item.id + user.avatar}>
+                                    <img src={user.avatar} />
+                                </span>
+                             )}
+                            </span>
+                            <span className="date">
+                                <a href={item.link} target="_blank">show on wrike</a>
+                            </span>
                             <span>
-                                <select defaultValue={item.status}>
+                                <select defaultValue={item.status} onChange={(_e)=>{this.handleChange(_e, item.id)}}>
                                     <option disabled>Статус</option>
                                     <option value="Active">Active</option>
-                                    <option value="Active">Completed</option>
-                                    <option value="Active">Deferred</option>
-                                    <option value="Active">Cancelled</option>
+                                    <option value="Completed">Completed</option>
+                                    <option value="Deferred">Deferred</option>
+                                    <option value="Cancelled">Cancelled</option>
                                 </select>
                             </span>
                         </div>
