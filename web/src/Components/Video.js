@@ -25,18 +25,18 @@ class Video extends React.Component {
     }
 
     componentDidMount() {
-        console.log('!', this.state.token)
-        if (this.state.token == '') {
-            // window.location.href = LINK + 'auth'
+        const token = localStorage.getItem('token')
+        if (token == '') {
+            window.location.href = LINK + 'auth'
         } else {
-            this.getTasks()
+            this.getTasks(token)
         }
     }
 
-    getTasks() {
+    getTasks(token) {
         console.log('GET TASKS')
 
-        axios.get(LINK + 'api/tasks?token=' + this.state.token).then((res) => {
+        axios.get(LINK + 'api/tasks?token=' + token).then((res) => {
             console.log(res['data']['data'])
             this.setState({tasks: res['data']['data']})
         })

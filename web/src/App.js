@@ -19,7 +19,15 @@ class App extends React.Component {
         }
 		this.onPopup = this.onPopup.bind(this);
 		this.onRedirect = this.onRedirect.bind(this);
-    }
+	}
+	
+	componentWillMount() {
+		if (localStorage.getItem('token') !== null) {
+			this.setState({ token: localStorage.getItem('token') });
+		} else {
+			localStorage.setItem('token', '');
+		}
+	}
 
     componentDidMount() {
         console.log(1);
@@ -34,6 +42,7 @@ class App extends React.Component {
 	}
 	
 	changeToken(cont) {
+		localStorage.setItem('token', cont);
 		this.setState({ token: cont });
 	}
 
