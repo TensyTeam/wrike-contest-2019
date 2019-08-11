@@ -84,6 +84,7 @@ def tasks():
 			'users': users(task['responsibleIds'], token),
 			'status': task['status'],
 			'time': task['dates'],
+			'link': task['permalink'],
 		})
 
 	return jsonify(tasks)
@@ -99,9 +100,41 @@ def cards():
 
 	#
 
-	x['id'] = 'IEACMILUKQLNANJ2'
+	params = {}
+
+	if 'name' in x:
+		params['title'] = x['name']
+
+	if 'cont' in x:
+		params['description'] = x['cont']
+
+	if 'status' in x:
+		params['status'] = x['status']
 
 	#
+
+	cont = requests.put('https://www.wrike.com/api/v4/tasks/{}'.format(x['id']), headers=headers, params=params)
+
+	return cont.text
+
+@app.route('/create', methods=['POST'])
+def create():
+	token = request.args.get('token')
+	x = request.json
+
+	headers = {
+		'Authorization': 'bearer {}'.format(token),
+	}
+
+	# Определить папку
+
+	folders = json.loads(requests.get('https://www.wrike.com/api/v4/folders', headers=headers).text)['data']
+
+	for folder in folders:
+		if folder['title'] == x['id']:
+			x['id'] = folder['id']
+
+	# Параметры
 
 	params = {}
 
@@ -114,10 +147,10 @@ def cards():
 	if 'status' in x:
 		params['status'] = x['status']
 
-	# for field in ('title', 'description', 'status'):
-	# 	if field in x:
-	# 		params[field] = x[field]
+	#
 
-	cont = requests.put('https://www.wrike.com/api/v4/tasks/{}'.format(x['id']), headers=headers, params=params)
+	cont = requests.post('https://www.wrike.com/api/v4/folders/{}/tasks'.format(x['id']), headers=headers, params=params)
+
+	print(cont.text)
 
 	return cont.text

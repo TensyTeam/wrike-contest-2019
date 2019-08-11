@@ -3,7 +3,7 @@ import { Redirect } from 'react-router-dom'
 
 import axios from 'axios'
 
-import { LINK } from '../keys'
+import { LINK } from '../sets'
 
 
 export default class Token extends React.Component {

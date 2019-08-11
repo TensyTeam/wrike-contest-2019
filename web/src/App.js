@@ -6,7 +6,6 @@ import Video from './Components/Video';
 import Popup from './Components/Popup';
 import Auth from './Components/Auth';
 import Token from './Components/Token';
-import Cards from './Components/Cards';
 
 
 class App extends React.Component {
@@ -88,9 +87,6 @@ class App extends React.Component {
 							token={ this.state.token }
 							change={this.changeToken}
 						/>
-					</Route>
-					<Route path="/cards">
-						<Cards />
 					</Route>
 				</Switch>
 			</BrowserRouter>

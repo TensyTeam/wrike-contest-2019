@@ -1,7 +1,7 @@
 import React from 'react'
 import { Redirect } from 'react-router-dom'
 
-import {CLIENT_ID, LINK} from '../keys'
+import {CLIENT_ID, LINK} from '../sets'
 
 
 export default class Auth extends React.Component {

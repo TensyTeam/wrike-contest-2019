@@ -4,7 +4,7 @@ import openSocket from 'socket.io-client'
 import $ from 'jquery'
 import axios from 'axios'
 
-import { LINK } from '../keys'
+import { LINK } from '../sets'
 
 
 class Video extends React.Component {
@@ -28,6 +28,7 @@ class Video extends React.Component {
 
     componentDidMount() {
         const token = localStorage.getItem('token')
+
         if (token == '') {
             // window.location.href = LINK + 'auth'
         } else {
@@ -59,10 +60,23 @@ class Video extends React.Component {
         })
     }
 
+	createTask(token, folder, json) {
+		json['id'] = folder
+
+		axios.post(LINK + 'api/create?token=' + token, json).then(res => {
+			console.log(res['data'])
+		})
+	}
+
     createCard() {
-        let _name = document.getElementById('create_card').value;
-        let _id_folder = '1';
-        // createTask(token, _id_folder, { name: _name, cont: '', status: 'Active' })
+        console.log('CREATE')
+
+        let token = localStorage.getItem('token')
+        let _name = document.getElementById('create_card').value
+        let _id_folder = 'Tensy' // !
+        this.createTask(token, _id_folder, { name: _name, status: 'Active' })
+
+        this.getTasks(token)
     }
 
     onStart() {
