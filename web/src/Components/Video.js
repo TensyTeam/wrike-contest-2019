@@ -5,7 +5,6 @@ import $ from 'jquery'
 import axios from 'axios'
 
 import { LINK } from '../keys'
-import { datetimeFormat } from '../Function/operations'
 
 
 class Video extends React.Component {
