@@ -1,11 +1,38 @@
 from flask import request, jsonify
 from app import app
 
-# import json
+import json
 
 import requests
 
 from keys import LINK, CLIENT_ID, CLIENT_SECRET, TOKEN
+
+
+def users(ids, token):
+	if type(ids) == str:
+		ids = [ids]
+	
+	#
+
+	users = []
+
+	#
+
+	headers = {
+		'Authorization': 'bearer {}'.format(token),
+	}
+
+	for id_ in ids:
+		response = json.loads(requests.get('https://www.wrike.com/api/v4/users/{}'.format(id_), headers=headers).text)['data'][0]
+		
+		users.append({
+			'id': id_,
+			'name': response['firstName'],
+			'surname': response['lastName'],
+			'avatar': response['avatarUrl'],
+		})
+	
+	return users
 
 
 # @app.route('/')
@@ -38,8 +65,44 @@ def tasks():
 		'Authorization': 'bearer {}'.format(token),
 	}
 
-	params = {}
+	params = {} # {
+	# 	'fields': ['sharedIds'],
+	# }
 
-	cont = requests.get('https://www.wrike.com/api/v4/tasks', headers=headers, params=params)
+	cont = requests.get('https://www.wrike.com/api/v4/tasks?fields=["description","responsibleIds"]', headers=headers, params=params)
 
-	return cont.text
+	response = json.loads(cont.text)
+
+	tasks = []
+
+	for task in response['data']:
+		tasks.append({
+			'id': task['id'],
+			'name': task['title'],
+			'cont': task['description'],
+			# 'author': users(task['accountId'], token),
+			'users': users(task['responsibleIds'], token),
+			'status': task['status'],
+			'time': task['dates'],
+		})
+
+	return jsonify(tasks)
+
+# @app.route('/cards', methods=['POST'])
+# def cards():
+# 	token = request.args.get('token')
+# 	x = request.json
+
+# 	headers = {
+# 		'Authorization': 'bearer {}'.format(token),
+# 	}
+
+# 	params = {}
+
+# 	for field in ('title', 'description'):
+# 		if field in x:
+# 			params[field] = x[field]
+
+# 	cont = requests.put('https://www.wrike.com/api/v4/tasks/{}'.format(x['id']), headers=headers, params=params)
+
+# 	return cont.text

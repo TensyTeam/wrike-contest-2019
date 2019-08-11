@@ -13,7 +13,7 @@ export default class Auth extends React.Component {
     componentDidMount() {
         this.change('')
 
-        window.location.href = 'https://www.wrike.com/oauth2/authorize/v4?client_id=' + CLIENT_ID + '&response_type=code&redirect_uri=' + LINK + 'token'
+        window.location.href = 'https://www.wrike.com/oauth2/authorize/v4?client_id=' + CLIENT_ID + '&response_type=code&scope=Default,amReadOnlyUser,amReadWriteUser&redirect_uri=' + LINK + 'token'
     }
 
     render() {

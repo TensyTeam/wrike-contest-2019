@@ -34,4 +34,4 @@ def rtc_cond2(mes):
         }, namespace='/space')
 
 if __name__ == '__main__':
-    socketio.run(app,host='127.0.0.1', port=5050)
+    socketio.run(app)
