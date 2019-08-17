@@ -16,7 +16,9 @@ class Video extends React.Component {
             room: null,
             token: props.token,
             tasks: [],
-            host: null
+            host: null,
+            socket_io: null,
+            // user: null,
 		}
 		this.onStart = this.onStart.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -24,6 +26,12 @@ class Video extends React.Component {
 	}
 
 	componentWillMount() {
+        let namespace = 'space'
+        let link = 'https://tensyteam.ru/'
+        const socket_io = openSocket(link + namespace)
+        this.setState({socket_io})
+
+
         this.onStart();
     }
 
@@ -37,32 +45,61 @@ class Video extends React.Component {
 
         console.log('!', token)
 
-        if (token == '') {
-            localStorage.setItem('room', room)
-            localStorage.setItem('workspace', workspace)
-            localStorage.setItem('user', user)
-            localStorage.setItem('type', type)
+        localStorage.setItem('room', room)
+        localStorage.setItem('workspace', workspace)
+        localStorage.setItem('user', user)
+        localStorage.setItem('type', type)
+        localStorage.setItem('current', null)
 
+        if (token == '') {
             window.location.href = LINK + 'auth'
         } else {
             this.getTasks(token)
         }
+
+        let socket_io = this.state.socket_io
+
+        let _position = document.location.pathname.split('/').pop();
+
+        if (_position === 'answer') {
+            axios.post(LINK + 'api/i?token=' + token).then(res => {
+                // if ('error' in res['data'] && res['data']['error'] == 'not_authorized') {
+                //     window.location.href = LINK + 'auth'
+                // }
+
+                console.log(res['data'])
+
+                socket_io.emit('i', {id: res['data']})
+                this.setState({user: res['data']})
+            })
+        } else {
+            socket_io.on('i', function(mes) {
+                console.log(mes['id'])
+                // this.setState({user: mes['id']})
+                localStorage.setItem('current', mes['id'])
+            })
+        }
     }
 
     getTasks(token) {
-        axios.get(LINK + 'api/tasks?token=' + token).then((res) => {
-            let _tasks = res['data'];
-            let _tasks_filter = [];
-            for(let m = 0; m < _tasks.length; m++) {
-                for(let i = 0; i < _tasks[m].users.length; i++) {
-                    let _name_surname = (_tasks[m].users[i].name + _tasks[m].users[i].surname).replace(/\s/g, '').toLowerCase();
-                    if(_name_surname === localStorage.getItem('user')) {
-                        _tasks_filter.push(_tasks[m]);
+        try {
+            axios.get(LINK + 'api/tasks?token=' + token).then((res) => {
+                let _tasks = res['data'];
+                let _tasks_filter = [];
+                for(let m = 0; m < _tasks.length; m++) {
+                    for(let i = 0; i < _tasks[m].users.length; i++) {
+                        let _name_surname = (_tasks[m].users[i].name + _tasks[m].users[i].surname).replace(/\s/g, '').toLowerCase();
+                        if(_name_surname === localStorage.getItem('user')) {
+                            _tasks_filter.push(_tasks[m]);
+                        }
                     }
                 }
-            }
-            this.setState({tasks: _tasks_filter})
-        })
+                this.setState({tasks: _tasks_filter})
+            })
+        } catch(err) {
+            console.log('!!!error!!!', err)
+        }
+        
     }
 
     handleChange(_e, _id) {
@@ -82,22 +119,24 @@ class Video extends React.Component {
     }
 
 	createTask(token, folder, json) {
-		json['id'] = folder
+        json['id'] = folder
+        json['user'] = localStorage.getItem('current') // this.state.user
 
 		axios.post(LINK + 'api/create?token=' + token, json).then(res => {
-			console.log(res['data'])
+            console.log(res['data'])
+
+            const token = localStorage.getItem('token')
+            this.getTasks(token)
 		})
 	}
 
     createCard() {
         console.log('CREATE')
 
-        let token = localStorage.getItem('token')
+        const token = localStorage.getItem('token')
         let _name = document.getElementById('create_card').value
         let _id_folder = 'Tensy' // !
         this.createTask(token, _id_folder, { name: _name, status: 'Active' })
-
-        this.getTasks(token)
     }
 
     onStart() {
@@ -106,9 +145,11 @@ class Video extends React.Component {
         console.log(_position, _room);
         this.setState({ position: _position, room: _room });
         // WebRTC
-        let namespace = 'space';
-        let link = 'https://tensyteam.ru/';
-        const socket_io = openSocket( link + namespace);
+        
+        // const socket_io = this.state.socket_io
+        let namespace = 'space'
+        let link = 'https://tensyteam.ru/'
+        const socket_io = openSocket(link + namespace)
 
         const stun = {iceServers: [{urls: 'stun:stun.l.google.com:19302'}]};
         const peer = new RTCPeerConnection(stun);

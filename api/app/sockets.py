@@ -33,5 +33,11 @@ def rtc_cond2(mes):
                 'room': mes['room'],
         }, namespace='/space')
 
+@socketio.on('i', namespace='/space')
+def i(mes):
+        socketio.emit('i', {
+                'id': mes['id'],
+        }, namespace='/space')
+
 if __name__ == '__main__':
     socketio.run(app)

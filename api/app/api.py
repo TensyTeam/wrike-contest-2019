@@ -87,7 +87,7 @@ def tasks():
 			'link': task['permalink'],
 		})
 
-	return jsonify(tasks)
+	return jsonify(tasks[::-1])
 
 @app.route('/cards', methods=['POST'])
 def cards():
@@ -126,6 +126,8 @@ def create():
 		'Authorization': 'bearer {}'.format(token),
 	}
 
+	print(x['user'])
+
 	# Определить папку
 
 	folders = json.loads(requests.get('https://www.wrike.com/api/v4/folders', headers=headers).text)['data']
@@ -147,10 +149,32 @@ def create():
 	if 'status' in x:
 		params['status'] = x['status']
 
+	# if x['user']:
+	# 	params['followers'] = [x['user']]
+
 	#
 
-	cont = requests.post('https://www.wrike.com/api/v4/folders/{}/tasks'.format(x['id']), headers=headers, params=params)
+	lin = 'https://www.wrike.com/api/v4/folders/{}/tasks'.format(x['id'])
+
+	if x['user']:
+		lin += '?followers=["{}"]'.format(x['user'])
+
+	print(lin)
+
+	cont = requests.post(lin, headers=headers, params=params)
 
 	print(cont.text)
 
 	return cont.text
+
+@app.route('/i', methods=['POST'])
+def i():
+	token = request.args.get('token')
+
+	headers = {
+		'Authorization': 'bearer {}'.format(token),
+	}
+
+	cont = json.loads(requests.get('https://www.wrike.com/api/v4/account', headers=headers).text)
+
+	return cont['data'][0]['id']
