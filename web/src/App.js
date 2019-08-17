@@ -6,6 +6,7 @@ import Video from './Components/Video';
 import Popup from './Components/Popup';
 import Auth from './Components/Auth';
 import Token from './Components/Token';
+import Choose from './Components/Choose';
 
 
 class App extends React.Component {
@@ -27,7 +28,7 @@ class App extends React.Component {
 			localStorage.setItem('token', '');
 		}
 	}
-    
+
     onPopup(_active, _current) {
 		this.setState({ popup: { active: _active, current: _current } });
 	}
@@ -80,6 +81,12 @@ class App extends React.Component {
 					</Route>
 					<Route path="/token">
 						<Token
+							token={ this.state.token }
+							change={this.changeToken}
+						/>
+					</Route>
+					<Route path="/choose">
+						<Choose
 							token={ this.state.token }
 							change={this.changeToken}
 						/>
