@@ -19,6 +19,7 @@ class App extends React.Component {
         }
 		this.onPopup = this.onPopup.bind(this);
 		this.onRedirect = this.onRedirect.bind(this);
+		this.onEditTitle = this.onEditTitle.bind(this);
 	}
 
 	componentWillMount() {
@@ -42,6 +43,12 @@ class App extends React.Component {
 		this.setState({ token: cont });
 	}
 
+    onEditTitle(_event) {
+        console.log('EDIT');
+        // ALEXA
+        _event.preventDefault();
+    }
+
     render() {
         return (
             <BrowserRouter>
@@ -50,6 +57,7 @@ class App extends React.Component {
                         popup={this.state.popup}
 						onPopup={this.onPopup}
 						onRedirect={this.onRedirect}
+                        onEditTitle={this.onEditTitle}
 					/>
 				}
 				<Switch>
