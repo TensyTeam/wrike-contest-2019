@@ -23,6 +23,8 @@ class Video extends React.Component {
 		this.onStart = this.onStart.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.createCard = this.createCard.bind(this);
+        this.deleteUser = this.deleteUser.bind(this);
+        this.editTitle = this.editTitle.bind(this);
 	}
 
 	componentWillMount() {
@@ -30,7 +32,6 @@ class Video extends React.Component {
         let link = 'https://tensyteam.ru/'
         const socket_io = openSocket(link + namespace)
         this.setState({socket_io})
-
 
         this.onStart();
     }
@@ -43,7 +44,7 @@ class Video extends React.Component {
         const user = document.location.search.split('=').pop()
         const type = document.location.pathname.split('/').pop()
 
-        console.log('!', token)
+        console.log('Token: ', token);
 
         localStorage.setItem('room', room)
         localStorage.setItem('workspace', workspace)
@@ -61,45 +62,50 @@ class Video extends React.Component {
 
         let _position = document.location.pathname.split('/').pop();
 
-        if (_position === 'answer') {
-            axios.post(LINK + 'api/i?token=' + token).then(res => {
-                // if ('error' in res['data'] && res['data']['error'] == 'not_authorized') {
-                //     window.location.href = LINK + 'auth'
-                // }
-
-                console.log(res['data'])
-
-                socket_io.emit('i', {id: res['data']})
-                this.setState({user: res['data']})
-            })
-        } else {
-            socket_io.on('i', function(mes) {
-                console.log(mes['id'])
-                // this.setState({user: mes['id']})
-                localStorage.setItem('current', mes['id'])
-            })
-        }
+        // if (_position === 'answer') {
+        //     axios.post(LINK + 'api/i?token=' + token).then(res => {
+        //         // if ('error' in res['data'] && res['data']['error'] == 'not_authorized') {
+        //         //     window.location.href = LINK + 'auth'
+        //         // }
+        //
+        //         console.log(res['data'])
+        //
+        //         socket_io.emit('i', {id: res['data']})
+        //         this.setState({user: res['data']})
+        //     })
+        // } else {
+        //     socket_io.on('i', function(mes) {
+        //         console.log(mes['id'])
+        //         // this.setState({user: mes['id']})
+        //         localStorage.setItem('current', mes['id'])
+        //     })
+        // }
     }
 
     getTasks(token) {
-        try {
-            axios.get(LINK + 'api/tasks?token=' + token).then((res) => {
-                let _tasks = res['data'];
-                let _tasks_filter = [];
-                for(let m = 0; m < _tasks.length; m++) {
-                    for(let i = 0; i < _tasks[m].users.length; i++) {
-                        let _name_surname = (_tasks[m].users[i].name + _tasks[m].users[i].surname).replace(/\s/g, '').toLowerCase();
-                        if(_name_surname === localStorage.getItem('user')) {
-                            _tasks_filter.push(_tasks[m]);
+        (async() => {
+            let apiRes = null;
+            try {
+                apiRes = await axios.get(LINK + 'api/tasks?token=' + token).then((res) => {
+                    let _tasks = res['data'];
+                    let _tasks_filter = [];
+                    let _current = null;
+                    for(let m = 0; m < _tasks.length; m++) {
+                        for(let i = 0; i < _tasks[m].users.length; i++) {
+                            let _name_surname = (_tasks[m].users[i].name + _tasks[m].users[i].surname).replace(/\s/g, '').toLowerCase();
+                            if(_name_surname === localStorage.getItem('user')) {
+                                _tasks_filter.push(_tasks[m]);
+                                _current = _tasks[m].users[i].id;
+                            }
                         }
                     }
-                }
-                this.setState({tasks: _tasks_filter})
-            })
-        } catch(err) {
-            console.log('!!!error!!!', err)
-        }
-        
+                    localStorage.setItem('current', _current)
+                    this.setState({ tasks: _tasks_filter })
+                });
+            } catch (err) {
+                console.log('%cOutdated', 'background: #e74c3c; color: #fff; padding: 5px; margin: 2px; border-radius: 4px');
+            }
+        })();
     }
 
     handleChange(_e, _id) {
@@ -131,21 +137,31 @@ class Video extends React.Component {
 	}
 
     createCard() {
-        console.log('CREATE')
-
+        console.log('Create')
         const token = localStorage.getItem('token')
         let _name = document.getElementById('create_card').value
         let _id_folder = 'Tensy' // !
         this.createTask(token, _id_folder, { name: _name, status: 'Active' })
     }
 
+    deleteUser(_id) {
+        console.log('Delete', _id)
+    }
+
+    editTitle(_title) {
+        this.props.onPopup(true, 'edit');
+        setTimeout(function() {
+            document.getElementById('edit_title').value = _title;
+        }, 1000);
+    }
+
     onStart() {
         let _position = document.location.pathname.split('/').pop();
         let _room = document.location.pathname.split('/')[document.location.pathname.split('/').length - 2];
-        console.log(_position, _room);
+        console.log('%c' +_position + ' ' + _room, 'background: #2ecc71; color: #fff; padding: 5px; margin: 2px; border-radius: 4px');
         this.setState({ position: _position, room: _room });
         // WebRTC
-        
+
         // const socket_io = this.state.socket_io
         let namespace = 'space'
         let link = 'https://tensyteam.ru/'
@@ -277,47 +293,52 @@ class Video extends React.Component {
     render() {
         return (
             <div className="videos">
-                {this.state.position === 'student' &&
-                    <div className="video-control" onClick={()=>{this.props.onFinish()}}>
-                        <div className="iconbar"><i className="fas fa-sign-out-alt"></i> Finish</div>
-                    </div>
-                }
                 <div className="cards">
-                    <div className="card" id="create_card_block">
-                        <input placeholder="Write new task here" id="create_card" />
-                        <div className="injected_btn" onClick={()=>{this.createCard()}}>Create</div>
-                    </div>
-                    {this.state.tasks.map(item =>
-                        <div className="card" key={item.id}>
-                            <div className="card_shadow" id={item.id}>Loading</div>
-                            <div className="card_title">{item.name}</div>
-                            <div className="card_contacts">
-                                <span className="photos">
-                                {item.users.map(user =>
-                                    <span className="photo" key={item.id + user.avatar}>
-                                        <img src={user.avatar} />
-                                    </span>
-                                 )}
-                                </span>
-                                <span className="date">
-                                    <a href={item.link} target="_blank">show on wrike</a>
-                                </span>
-                                <span>
-                                    <select defaultValue={item.status} onChange={(_e)=>{this.handleChange(_e, item.id)}}>
-                                        <option disabled>Статус</option>
-                                        <option value="Active">Active</option>
-                                        <option value="Completed">Completed</option>
-                                        <option value="Deferred">Deferred</option>
-                                        <option value="Cancelled">Cancelled</option>
-                                    </select>
-                                </span>
-                            </div>
+                    {this.state.position === 'request' &&
+                        <div className="card" id="create_card_block">
+                            <input placeholder="Write new task here" id="create_card" />
+                            <div className="injected_btn" onClick={()=>{this.createCard()}}>Create</div>
                         </div>
-                    )}
+                    }
+                    {this.state.tasks.length !== 0 ?
+                        <>
+                            {this.state.tasks.map(item =>
+                                <div className="card" key={item.id}>
+                                    <div className="card_shadow" id={item.id}>Loading</div>
+                                    <div className="card_title" onClick={()=>{this.editTitle(item.name)}}>{item.name}</div>
+                                    <div className="card_contacts">
+                                        <span className="photos">
+                                        {item.users.map(user =>
+                                            <span className="photo" key={item.id + user.avatar} onClick={()=>{this.deleteUser(user.id)}}>
+                                                <img src={user.avatar} />
+                                            </span>
+                                         )}
+                                        </span>
+                                        <span className="date">
+                                            <a href={item.link} target="_blank">show on wrike</a>
+                                        </span>
+                                        <span>
+                                            <select defaultValue={item.status} onChange={(_e)=>{this.handleChange(_e, item.id)}}>
+                                                <option disabled>Статус</option>
+                                                <option value="Active">Active</option>
+                                                <option value="Completed">Completed</option>
+                                                <option value="Deferred">Deferred</option>
+                                                <option value="Cancelled">Cancelled</option>
+                                            </select>
+                                        </span>
+                                    </div>
+                                </div>
+                            )}
+                        </>
+                    :
+                        <div className="loader">
+                            <img src="/img/loader.png" alt="" />
+                        </div>
+                    }
                 </div>
                 <div className="video-connect">
                     <div className="iconbar">
-                        {this.state.position} <i id="connect" className="fas fa-circle fa-error"></i>
+                        {this.state.position === 'request' || this.state.position === 'answer' ? this.state.position : 'Error'} <i id="connect" className="fas fa-circle fa-error"></i>
                     </div>
                 </div>
                 <video id="local" autoPlay></video>
