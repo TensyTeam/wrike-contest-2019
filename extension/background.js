@@ -17,7 +17,7 @@ let timerId = setInterval(() => {
 setTimeout(() => {
     // if long load
     if (array.length === 0) {
-        alert('ExTensy:\nAttach a person to at least one card!\n(This error could occur in case of bad internet connection)');
+        alert('ExTensy:\nThere are no assigned cards\n(This error could occur in case of bad internet connection)');
         clearTimeout(timerId);
     }
 }, 40000);
@@ -30,23 +30,21 @@ function addBtn() {
         let count = (_block_split.length - 1);
         if(count > 1) {
             let n = 1;
+            let _user_block = '';
+            let _user_link_block = '';
             while(n <= count) {
-                // get user src
-                let _position_start_1 = _block_split[n].indexOf('src')+5;
-                let _position_end_1 = _block_split[n].indexOf('alt')-2;
-                let _user_link_block = _block_split[n].substr(_position_start_1,_position_end_1-_position_start_1);
                 // get user name & surname
                 let _position_start_2 = _block_split[n].indexOf('alt')+5;
                 let _position_end_2 = _block_split[n].indexOf('title')-2;
-                let _user_block = _block_split[n].substr(_position_start_2,_position_end_2-_position_start_2);
-                // get workspace name
-                let _workspace_name = document.getElementsByClassName('header-title__main')[0].innerText;
-                // generate room
-                let _room = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-                // add info
-                array[i].innerHTML+=`<a style="display:flex" class="injected_btn" href="https://tensyteam.ru/video/`+ _room + `/request?workspace=` + _workspace_name + `&user=` + _user_block +`"><img style="width: 24px; height: 24px;border-radius:50%;padding: 2px" src="`+ _user_link_block +`"/></a>`;
-                n++
+                _user_block += _block_split[n].substr(_position_start_2,_position_end_2-_position_start_2).replace(/\s/g, '').toLowerCase() + '*';
+                n++;
             }
+            // get workspace name
+            let _workspace_name = document.getElementsByClassName('header-title__main')[0].innerText;
+            // generate room
+            let _room = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+            // add info
+            array[i].innerHTML+=`<a class="injected_btn" href="https://tensyteam.ru/choose/`+ _room + `/request?workspace=` + _workspace_name + `&users=` + _user_block.slice(0,-1) + `">Discuss</a>`;
         } else {
             // get user name & surname
             let _position_start = _block.indexOf('alt')+5;
