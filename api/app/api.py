@@ -152,21 +152,9 @@ def create():
 	if x['user']:
 		params['responsibles'] = json.dumps([x['user']])
 
-		# params['fields'] = {
-		# 	'responsibles': [x['user']],
-		# }
-
-		# params['customFields'] = [{
-		# 	'key': 'responsibles',
-		# 	'value': [x['user']],
-		# }]
-
 	#
 
 	lin = 'https://www.wrike.com/api/v4/folders/{}/tasks'.format(x['id'])
-
-	# if x['user']:
-	# 	lin += '?followers=["{}"]'.format(x['user'])
 
 	print(lin, params)
 
@@ -176,31 +164,39 @@ def create():
 
 	cont_id = json.loads(cont.text)['data'][0]['id']
 
-	#
-
-	# params = {
-	# 	'customFields': {
-	# 		'addResponsibles': [x['user']],
-	# 	},
-	# 	# 'addResponsibles': [x['user']],
-	# }
-
-	# cont = requests.put('https://www.wrike.com/api/v4/tasks/{}'.format(cont_id), headers=headers, params=params)
-
-	# print(cont.text)
-
 	return cont_id
 
-@app.route('/i', methods=['POST'])
-def i():
+@app.route('/delete', methods=['POST'])
+def delete():
 	token = request.args.get('token')
+	x = request.json
 
 	headers = {
 		'Authorization': 'bearer {}'.format(token),
 	}
 
-	cont = json.loads(requests.get('https://www.wrike.com/api/v4/account', headers=headers).text)
+	#
 
-	print(cont)
+	params = {
+		'removeResponsibles': json.dumps([x['user']]),
+	}
 
-	return cont['data'][0]['id']
+	lin = 'https://www.wrike.com/api/v4/tasks/{}'.format(x['id'])
+
+	cont = requests.put(lin, headers=headers, data=params)
+
+	return cont.text
+
+# @app.route('/i', methods=['POST'])
+# def i():
+# 	token = request.args.get('token')
+
+# 	headers = {
+# 		'Authorization': 'bearer {}'.format(token),
+# 	}
+
+# 	cont = json.loads(requests.get('https://www.wrike.com/api/v4/account', headers=headers).text)
+
+# 	print(cont)
+
+# 	return cont['data'][0]['id']

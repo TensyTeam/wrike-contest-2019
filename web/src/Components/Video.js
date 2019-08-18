@@ -57,29 +57,6 @@ class Video extends React.Component {
         } else {
             this.getTasks(token)
         }
-
-        // let socket_io = this.state.socket_io
-
-        // let _position = document.location.pathname.split('/').pop();
-
-        // if (_position === 'answer') {
-        //     axios.post(LINK + 'api/i?token=' + token).then(res => {
-        //         // if ('error' in res['data'] && res['data']['error'] == 'not_authorized') {
-        //         //     window.location.href = LINK + 'auth'
-        //         // }
-        //
-        //         console.log(res['data'])
-        //
-        //         socket_io.emit('i', {id: res['data']})
-        //         this.setState({user: res['data']})
-        //     })
-        // } else {
-        //     socket_io.on('i', function(mes) {
-        //         console.log(mes['id'])
-        //         // this.setState({user: mes['id']})
-        //         localStorage.setItem('current', mes['id'])
-        //     })
-        // }
     }
 
     getTasks(token) {
@@ -124,6 +101,19 @@ class Video extends React.Component {
         })
     }
 
+    deleteUser(token, id, user) {
+        console.log('Delete', id, user)
+
+        let json = {
+            'user': user,
+            'id': id,
+        }
+
+        axios.post(LINK + 'api/delete?token=' + token, json).then(res => {
+            console.log(res);
+        })
+    }
+
 	createTask(token, folder, json) {
         json['id'] = folder
         json['user'] = localStorage.getItem('current') // this.state.user
@@ -142,10 +132,6 @@ class Video extends React.Component {
         let _name = document.getElementById('create_card').value
         let _id_folder = 'Tensy' // !
         this.createTask(token, _id_folder, { name: _name, status: 'Active' })
-    }
-
-    deleteUser(_id) {
-        console.log('Delete', _id)
     }
 
     editTitle(_title) {
@@ -309,7 +295,7 @@ class Video extends React.Component {
                                     <div className="card_contacts">
                                         <span className="photos">
                                         {item.users.map(user =>
-                                            <span className="photo" key={item.id + user.avatar} onClick={()=>{this.deleteUser(user.id)}}>
+                                            <span className="photo" key={item.id + user.avatar} onClick={()=>{this.deleteUser(this.state.token, item.id, user.id)}}>
                                                 <img src={user.avatar} />
                                             </span>
                                          )}
