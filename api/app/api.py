@@ -126,8 +126,6 @@ def create():
 		'Authorization': 'bearer {}'.format(token),
 	}
 
-	print(x['user'])
-
 	# Определить папку
 
 	folders = json.loads(requests.get('https://www.wrike.com/api/v4/folders', headers=headers).text)['data']
@@ -135,6 +133,8 @@ def create():
 	for folder in folders:
 		if folder['title'] == x['id']:
 			x['id'] = folder['id']
+
+	print('-{}-{}'.format(x['user'], x['id']))
 
 	# Параметры
 
@@ -149,23 +149,47 @@ def create():
 	if 'status' in x:
 		params['status'] = x['status']
 
-	# if x['user']:
-	# 	params['followers'] = [x['user']]
+	if x['user']:
+		params['responsibles'] = json.dumps([x['user']])
+
+		# params['fields'] = {
+		# 	'responsibles': [x['user']],
+		# }
+
+		# params['customFields'] = [{
+		# 	'key': 'responsibles',
+		# 	'value': [x['user']],
+		# }]
 
 	#
 
 	lin = 'https://www.wrike.com/api/v4/folders/{}/tasks'.format(x['id'])
 
-	if x['user']:
-		lin += '?followers=["{}"]'.format(x['user'])
+	# if x['user']:
+	# 	lin += '?followers=["{}"]'.format(x['user'])
 
-	print(lin)
+	print(lin, params)
 
-	cont = requests.post(lin, headers=headers, params=params)
+	cont = requests.post(lin, headers=headers, data=params)
 
 	print(cont.text)
 
-	return cont.text
+	cont_id = json.loads(cont.text)['data'][0]['id']
+
+	#
+
+	# params = {
+	# 	'customFields': {
+	# 		'addResponsibles': [x['user']],
+	# 	},
+	# 	# 'addResponsibles': [x['user']],
+	# }
+
+	# cont = requests.put('https://www.wrike.com/api/v4/tasks/{}'.format(cont_id), headers=headers, params=params)
+
+	# print(cont.text)
+
+	return cont_id
 
 @app.route('/i', methods=['POST'])
 def i():
@@ -176,5 +200,7 @@ def i():
 	}
 
 	cont = json.loads(requests.get('https://www.wrike.com/api/v4/account', headers=headers).text)
+
+	print(cont)
 
 	return cont['data'][0]['id']

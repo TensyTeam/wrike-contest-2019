@@ -58,9 +58,9 @@ class Video extends React.Component {
             this.getTasks(token)
         }
 
-        let socket_io = this.state.socket_io
+        // let socket_io = this.state.socket_io
 
-        let _position = document.location.pathname.split('/').pop();
+        // let _position = document.location.pathname.split('/').pop();
 
         // if (_position === 'answer') {
         //     axios.post(LINK + 'api/i?token=' + token).then(res => {
