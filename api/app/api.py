@@ -195,8 +195,10 @@ def delete():
 # 		'Authorization': 'bearer {}'.format(token),
 # 	}
 
-# 	cont = json.loads(requests.get('https://www.wrike.com/api/v4/account', headers=headers).text)
+# 	cont = json.loads(requests.get('https://www.wrike.com/api/v4/account', headers=headers).text)['data'][0]
 
-# 	print(cont)
+# 	res = {
+# 		'id': cont['id'],
+# 	}
 
-# 	return cont['data'][0]['id']
+# 	return res

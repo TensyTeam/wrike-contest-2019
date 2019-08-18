@@ -33,6 +33,24 @@ class Video extends React.Component {
         const socket_io = openSocket(link + namespace)
         this.setState({socket_io})
 
+        // Уведомление
+
+        const type = document.location.pathname.split('/').pop()
+
+        if (type == 'request') {
+            const room = document.location.pathname.split('/')[document.location.pathname.split('/').length - 2]
+            const workspace = document.location.search.split('&')[0].split('=').pop()
+            const user = document.location.search.split('=').pop()
+    
+            socket_io.emit('notification', {
+                room: room,
+                workspace: workspace,
+                user: user,
+            })
+        }
+
+        //
+
         this.onStart();
     }
 
