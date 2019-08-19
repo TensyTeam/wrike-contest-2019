@@ -6,7 +6,7 @@ Look a demo (hyperlink) for quick intro
 
 ### Instruction:
 
-1) Download(hyperlink) and unpack exTensy;
+1) [Download](https://tensyteam.ru/extension.zip) and unpack exTensy;
 2) Open chrome://extensions/ and switch the slider “Developer dode” in the right corner on;
 3) Press "Load unpacked" in the left corner;
 4) Browse to the unpacked extension and select the folder for your OS;
