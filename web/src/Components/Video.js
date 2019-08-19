@@ -41,7 +41,7 @@ class Video extends React.Component {
             const room = document.location.pathname.split('/')[document.location.pathname.split('/').length - 2]
             const workspace = document.location.search.split('&')[0].split('=').pop()
             const user = document.location.search.split('=').pop()
-    
+
             socket_io.emit('notification', {
                 room: room,
                 workspace: workspace,
@@ -99,6 +99,7 @@ class Video extends React.Component {
                 });
             } catch (err) {
                 console.log('%cOutdated', 'background: #e74c3c; color: #fff; padding: 5px; margin: 2px; border-radius: 4px');
+                window.location.href = LINK + 'auth';
             }
         })();
     }
@@ -119,16 +120,20 @@ class Video extends React.Component {
         })
     }
 
-    deleteUser(token, id, user) {
-        console.log('Delete', id, user)
-
+    deleteUser(cardId, user) {
         let json = {
             'user': user,
-            'id': id,
+            'id': cardId,
         }
+
+        const token = localStorage.getItem('token')
+
+        document.getElementById(cardId).style.display='flex';
 
         axios.post(LINK + 'api/delete?token=' + token, json).then(res => {
             console.log(res);
+            document.getElementById(cardId).style.display='none';
+            this.getTasks(token)
         })
     }
 
@@ -139,24 +144,28 @@ class Video extends React.Component {
 		axios.post(LINK + 'api/create?token=' + token, json).then(res => {
             console.log(res['data'])
 
+            document.getElementById('create_card').value = '';
+            document.getElementById('create_card_shadow').style.display='none';
+
             const token = localStorage.getItem('token')
             this.getTasks(token)
 		})
 	}
 
     createCard() {
-        console.log('Create')
         const token = localStorage.getItem('token')
         let _name = document.getElementById('create_card').value
-        let _id_folder = 'Tensy' // !
+        let _id_folder = localStorage.getItem('workspace') // 'Tensy' !
+        document.getElementById('create_card_shadow').style.display='flex';
         this.createTask(token, _id_folder, { name: _name, status: 'Active' })
     }
 
-    editTitle(_title) {
+    editTitle(_cardId) {
         this.props.onPopup(true, 'edit');
         setTimeout(function() {
-            document.getElementById('edit_title').value = _title;
-        }, 1000);
+            document.getElementById('edit_title').value = document.getElementById('title'+_cardId).innerHTML;
+            document.getElementById('edit_id').value = _cardId;
+        }, 300);
     }
 
     onStart() {
@@ -300,6 +309,7 @@ class Video extends React.Component {
                 <div className="cards">
                     {this.state.position === 'request' &&
                         <div className="card" id="create_card_block">
+                            <div className="card_shadow" id="create_card_shadow">Loading</div>
                             <input placeholder="Write new task here" id="create_card" />
                             <div className="injected_btn" onClick={()=>{this.createCard()}}>Create</div>
                         </div>
@@ -309,12 +319,12 @@ class Video extends React.Component {
                             {this.state.tasks.map(item =>
                                 <div className="card" key={item.id}>
                                     <div className="card_shadow" id={item.id}>Loading</div>
-                                    <div className="card_title" onClick={()=>{this.editTitle(item.name)}}>{item.name}</div>
+                                    <div className="card_title" id={'title' + item.id} onClick={()=>{this.editTitle(item.id)}}>{item.name}</div>
                                     <div className="card_contacts">
                                         <span className="photos">
                                         {item.users.map(user =>
-                                            <span className="photo" key={item.id + user.avatar} onClick={()=>{this.deleteUser(this.state.token, item.id, user.id)}}>
-                                                <img src={user.avatar} />
+                                            <span className="photo" key={item.id + user.avatar} onClick={()=>{this.deleteUser(item.id, user.id)}}>
+                                                <img src={user.avatar} alt="delete" />
                                             </span>
                                          )}
                                         </span>
