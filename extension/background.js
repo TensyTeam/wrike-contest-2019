@@ -75,7 +75,8 @@ socket_io.on('notification', function(mes) {
     const _user = (document.getElementsByClassName('profile-widget__author-name')[0].innerHTML).toLowerCase();
     console.log(_user);
     if(mes.user.indexOf(_user) !== -1) {
-        alert('Your collegue invites you to join a conversation');
-        window.location.href = 'https://tensyteam.ru/video/' + mes.room + '/answer?workspace=' + mes.workspace + '&user=' + mes.user;
+        if(confirm('Your collegue invites you to join a conversation')) {
+            window.location.href = 'https://tensyteam.ru/video/' + mes.room + '/answer?workspace=' + mes.workspace + '&user=' + mes.user;
+        }
     }
 });
