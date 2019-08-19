@@ -19,3 +19,10 @@ During the conversation, choose tasks to discuss, create new, assign other membe
 
 ### Technologies and APIs:
 Wrike API, React.js, WebRTC, NGINX, Socket.io, Flask
+
+![Wrike API](https://i.ibb.co/FnWPtT9/5.png)
+![React.js](https://i.ibb.co/d5K5F08/1.png)
+![WebRTC](https://i.ibb.co/HhxB0nZ/6.png)
+![NGINX](https://i.ibb.co/6F94g00/3.png)
+![Socket.io](https://i.ibb.co/1JSqc7r/4.png)
+![Flask](https://i.ibb.co/RgZn25w/2.png)
