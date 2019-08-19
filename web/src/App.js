@@ -1,4 +1,6 @@
 import React from 'react';
+import $ from 'jquery'
+import axios from 'axios'
 import { BrowserRouter, Route, Switch, Redirect, browserHistory } from "react-router-dom";
 
 import Home from './Components/Home';
@@ -7,6 +9,8 @@ import Popup from './Components/Popup';
 import Auth from './Components/Auth';
 import Token from './Components/Token';
 import Choose from './Components/Choose';
+
+import { LINK } from './sets'
 
 
 class App extends React.Component {
@@ -44,8 +48,16 @@ class App extends React.Component {
 	}
 
     onEditTitle(_event) {
-        console.log('EDIT');
-        // ALEXA
+        let _name = document.getElementById('edit_title').value;
+        let _id = document.getElementById('edit_id').value;
+        let json = { name: _name };
+        let token = localStorage.getItem('token');
+        json['id'] = _id;
+
+        axios.post(LINK + 'api/cards?token=' + token, json).then(res => {
+            document.getElementById('title'+_id).innerHTML=_name;
+            this.onPopup(false);
+        })
         _event.preventDefault();
     }
 
