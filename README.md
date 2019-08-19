@@ -1,4 +1,4 @@
-# exTesny
+# exTensy
 
 exTensy is a Google Chrome extension, which provides your team with possibility to discuss any task via webRTC video chat right on the Wrike platform.
 
