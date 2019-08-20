@@ -51,7 +51,12 @@ class Home extends React.Component {
                 <div className="hero_footer">
                     <div className="text">Make your team more <span className="gradient gradient_green">productive</span>!</div>
                     <div className="btn_block">
-                        <a href="/extension.zip" download="" className="injected_btn">Download</a>
+                        <a href="/extension.zip" download="" className="injected_btn" onClick={() => { this.props.onPopup(true, 'download'); }}>Download</a>
+                    </div>
+                    <div className="github">
+                        <a href="https://github.com/mike-petrov/wrike-contest-2019">
+                            <img src="/img/github.png" alt="" />
+                        </a>
                     </div>
                 </div>
                 <div className="footer">
