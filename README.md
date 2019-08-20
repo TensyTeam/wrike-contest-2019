@@ -7,14 +7,14 @@ Look a [demo](https://www.youtube.com/watch?v=jvZLVsmT5as) for quick intro
 ### Instruction:
 
 1) [Download](https://tensyteam.ru/extension.zip) and unpack exTensy;
-2) Open *chrome://extensions* and switch the slider “Developer dode” in the right corner on;
+2) Open *chrome://extensions* and switch the slider “Developer mode” in the right corner on;
 3) Press "Load unpacked" in the left corner;
 4) Browse to the unpacked extension and select the folder for your OS;
 5) Check that extension has installed in the top right corner;
 
-Open any board on Wrike with at least one assigned card, press discuss button and wait while your colleague join the discussion;
+6) Open any board on Wrike with at least one assigned card, press discuss button and wait while your colleague join the discussion;
 
-During the conversation, choose tasks to discuss, create new, assign other members and enjoy the close and efficient interaction on Wrike;
+7) During the conversation, choose tasks to discuss, create new, assign other members and enjoy the close and efficient interaction on Wrike;
 
 
 ### Technologies and APIs:

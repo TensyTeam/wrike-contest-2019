@@ -19,7 +19,7 @@ class Popup extends React.Component {
                     <div className='popup_content'>
                         <div className='text' style={{color: '#1d364c'}}>
                             <p>1) Download and unpack exTensy</p>
-                            <p>2) Open chrome://extensions and switch the slider “Developer dode” in the right corner on</p>
+                            <p>2) Open chrome://extensions and switch the slider “Developer mode” in the right corner on</p>
                             <p>3) Press "Load unpacked" in the left corner</p>
                             <p>4) Browse to the unpacked extension and select the folder for your OS</p>
                             <p>5) Check that extension has installed in the top right corner</p>

@@ -36,11 +36,11 @@ class Home extends React.Component {
                     <div className="screenshots">
                         <div className="screenshot">
                             <img src="/img/1.png" />
-                            <div className="screenshot_title">1. Download Extensy and switch it on</div>
+                            <div className="screenshot_title">1. Download exTensy and switch it on</div>
                         </div>
                         <div className="screenshot">
                             <img src="/img/2.png" />
-                            <div className="screenshot_title">2. Choose any task on the Wrike platfrom</div>
+                            <div className="screenshot_title">2. Choose any assigned task on the Wrike platfrom</div>
                         </div>
                         <div className="screenshot">
                             <img src="/img/3.png" />
