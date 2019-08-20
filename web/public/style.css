@@ -18,10 +18,13 @@ a:hover {
     justify-content: center;
     padding: 20px;
     margin: 0 auto;
+    flex-direction: column;
+    text-align: center;
 }
 
 .loader img {
     width: 100px;
+    margin: 0 auto 30px;
     height: auto;
     animation: pulse 3s linear infinite;
 }
@@ -74,6 +77,8 @@ a:hover {
     height: 100vh;
     /* transform: rotateY(180deg); */
     z-index: 10;
+    z-index: 1;
+    position: absolute;
 }
 
 #local {
@@ -174,6 +179,16 @@ form {
 .video-control .iconbar {
     padding: 15px;
     border-radius: 4px;
+}
+
+.failed {
+    top: 80px;
+    background: #e74c3c;
+    z-index: 1;
+}
+
+.failed .fas {
+    color: #fff;
 }
 
 .gradient {

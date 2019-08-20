@@ -18,6 +18,7 @@ class Video extends React.Component {
             tasks: [],
             host: null,
             socket_io: null,
+            error: false,
             // user: null,
 		}
 		this.onStart = this.onStart.bind(this);
@@ -25,6 +26,7 @@ class Video extends React.Component {
         this.createCard = this.createCard.bind(this);
         this.deleteUser = this.deleteUser.bind(this);
         this.editTitle = this.editTitle.bind(this);
+        this.onClose = this.onClose.bind(this);
 	}
 
 	componentWillMount() {
@@ -49,7 +51,9 @@ class Video extends React.Component {
             })
         }
 
-        //
+        this.timeout = setTimeout(() => {
+            this.setState({ error: true })
+        }, 10000);
 
         this.onStart();
     }
@@ -118,6 +122,10 @@ class Video extends React.Component {
             console.log(res['data']);
             document.getElementById(id).style.display='none';
         })
+    }
+
+    onClose() {
+        this.setState({ error: false })
     }
 
     deleteUser(cardId, user) {
@@ -347,14 +355,24 @@ class Video extends React.Component {
                     :
                         <div className="loader">
                             <img src="/img/loader.png" alt="" />
+                            <p>Please wait</p>
+                            <p>(Sometimes it takes a little time)</p>
                         </div>
                     }
                 </div>
                 <div className="video-connect">
                     <div className="iconbar">
-                        {this.state.position === 'request' || this.state.position === 'answer' ? this.state.position : 'Error'} <i id="connect" className="fas fa-circle fa-error"></i>
+                        {this.state.position === 'request' || this.state.position === 'answer' ? this.state.position : 'Error'}
+                        <i id="connect" className="fas fa-circle fa-error"></i>
                     </div>
                 </div>
+                {this.state.error && this.state.position === 'answer' && (
+                    <div className="video-connect failed">
+                        <div className="iconbar">
+                            Try to refresh the page <i id="close" className="fas fa-times" onClick={() => {this.onClose()}}></i>
+                        </div>
+                    </div>
+                )}
                 <video id="local" autoPlay></video>
                 <video id="remote" autoPlay></video>
             </div>
